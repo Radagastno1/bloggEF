@@ -21,5 +21,13 @@ public class MyDbContext : DbContext
             blog.HasMany(b => b.Posts).WithOne(p => p.Blog).OnDelete(DeleteBehavior.Cascade);
             blog.HasOne(b => b.Author).WithMany(a => a.Blogs).HasForeignKey(b => b.AuthorId);
         });
+        builder.Entity<Author>(author =>
+        {
+            author.HasMany(a => a.Blogs).WithOne(b => b.Author);
+        });
+        builder.Entity<Post>(post =>
+        {
+            post.HasOne(p => p.Blog).WithMany(b => b.Posts);
+        });
     }
 }

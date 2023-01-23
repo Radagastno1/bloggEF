@@ -13,16 +13,16 @@ public class AuthorService
     public IEnumerable<Author> GetAllAuthors()
     {
         var authors = _authorRepository.GetAll();
-        if(authors == null || authors.Count() < 1)
+        if (authors == null || authors.Count() < 1)
         {
             throw new ArgumentException("No authors found.");
-        }    
+        }
         return authors;
     }
     public Author GetAuthorById(int id)
     {
         var author = _authorRepository.GetById(id);
-        if(author == null)
+        if (author == null)
         {
             throw new ArgumentException("No author found.");
         }
@@ -43,16 +43,17 @@ public class AuthorService
     }
     public void AddAuthorWithBlog(Author author, Blog blog)
     {
+        author.Blogs.Add(blog);
         int authorId = _authorRepository.Insert(author);
         blog.AuthorId = authorId;
         int blogId = _blogRepository.Insert(blog);
-        AssignBlogToAuthor(authorId, blogId);
+        // AssignBlogToAuthor(authorId, blogId);
     }
-    public void AssignBlogToAuthor(int authorId, int blogId)
-    {
-        Author author = _authorRepository.GetById(authorId);
-        Blog blog = _blogRepository.GetById(blogId);
-        author.Blogs.Add(blog);
-        _authorRepository.Update(author);
-    }
+    // public void AssignBlogToAuthor(int authorId, int blogId)
+    // {
+    //     Author author = _authorRepository.GetById(authorId);
+    //     Blog blog = _blogRepository.GetById(blogId);
+    //     author.Blogs.Add(blog);
+    //     _authorRepository.Update(author);
+    // }
 }

@@ -1,5 +1,6 @@
 using LOGIC;
 using CORE;
+using Microsoft.EntityFrameworkCore;
 namespace DATABASE.Repositories;
 public class AuthorRepository : IRepository<Author>
 {
@@ -19,7 +20,7 @@ public class AuthorRepository : IRepository<Author>
     }
     public Author GetById(int id)
     {
-        return _db.Authors.Find(id);
+        return _db.Authors.Include(a => a.Blogs.Where(b => b.AuthorId == id)).First(a => a.AuthorId == id);
     }
     public int Insert(Author author)
     {
@@ -33,6 +34,6 @@ public class AuthorRepository : IRepository<Author>
     }
     IEnumerable<Author> IRepository<Author>.GetBySearch(string search)
     {
-        return _db.Authors.Where(a => a.Name.Contains(search));
+        return _db.Authors.Include(a => a.Blogs).Where(a => a.Name.Contains(search));
     }
 }

@@ -39,5 +39,9 @@ public class BlogService
         }
         _blogRepository.Delete(blog);
     }
+    public int AddBlog(Blog blog)
+    {
+        return _blogRepository.Insert(blog);
+    }
     
 }
