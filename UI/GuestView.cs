@@ -3,7 +3,7 @@ public class GuestView
 {
     public void ShowBlogMenu()
     {
-        string [] options = new[]{"Top-listan", "Sök", "Senaste blogg-inläggen", "Avsluta"};
+        string [] options = new[]{"Top blogs", "Search", "Latest posts", "Quit"};
         int optionNr = MenuArrows.Menu(options);
         switch(optionNr)
         {
