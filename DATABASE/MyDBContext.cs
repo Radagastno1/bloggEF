@@ -10,7 +10,8 @@ public class MyDbContext : DbContext
     public MyDbContext() { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=BlogTest");
+        string filePath = @"C:\Users\angel\Documents\suvnet22\OOP2\bloggEF\DATABASE\database.db";
+        optionsBuilder.UseSqlite($"Data Source={filePath}");
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
