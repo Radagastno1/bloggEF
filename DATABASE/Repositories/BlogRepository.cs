@@ -32,7 +32,6 @@ public class BlogRepository : IRepository<Blog>
     {
         _db.SaveChanges();
     }
-
     IEnumerable<Blog> IRepository<Blog>.GetBySearch(string search)
     {
        return _db.Blogs.Where(b => b.Name.Contains(search) || b.Description.Contains(search));

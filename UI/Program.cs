@@ -12,6 +12,7 @@ internal class Program
             guestView.ShowBlogMenu();
             break;
             case 1:
+            
             break;
         }
     }

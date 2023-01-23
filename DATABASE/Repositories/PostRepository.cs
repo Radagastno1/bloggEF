@@ -31,7 +31,6 @@ public class PostRepository : IRepository<Post>
     {
         _db.SaveChanges();
     }
-
     IEnumerable<Post> IRepository<Post>.GetBySearch(string search)
     {
         return _db.Posts.Where(p => p.Content.Contains(search) || p.Title.Contains(search));
