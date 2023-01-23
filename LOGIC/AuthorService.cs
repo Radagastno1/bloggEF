@@ -24,7 +24,12 @@ public class AuthorService
     }
     public void DeleteAuthor(int id)
     {
-        _authorRepository.Delete(id);
+        var author = GetAuthorById(id);
+        if (author == null)
+        {
+            throw new ArgumentException("Author not found.");
+        }
+        _authorRepository.Delete(author);
     }
     public void AssignBlogToAuthor(int authorId, int blogId)
     {

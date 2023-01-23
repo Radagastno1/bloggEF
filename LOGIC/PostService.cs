@@ -22,6 +22,11 @@ public class PostService
     }
     public void DeletePost(int id)
     {
-        _postRepository.Delete(id);
+        var post = _postRepository.GetById(id);
+        if(post == null)
+        {
+            throw new ArgumentException("No post found.");
+        }
+        _postRepository.Delete(post);
     }
 }

@@ -6,6 +6,6 @@ public interface IRepository<T>
     T GetById(int id);
     void Insert(T obj);
     void Update(T obj);
-    void Delete(int id);
+    void Delete(T obj);
     void Save();
 }

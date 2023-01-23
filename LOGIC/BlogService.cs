@@ -22,6 +22,11 @@ public class BlogService
     }
     public void DeleteBlog(int id)
     {
-        _blogRepository.Delete(id);
+        var blog = _blogRepository.GetById(id);
+        if(blog == null)
+        {
+            throw new ArgumentException("No blog found.");
+        }
+        _blogRepository.Delete(blog);
     }
 }
