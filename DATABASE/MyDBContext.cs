@@ -4,9 +4,9 @@ namespace DATABASE;
 
 public class MyDbContext : DbContext
 {
-    DbSet<Blog> Blogs { get; set; }
-    DbSet<Author> Authors { get; set; }
-    DbSet<Post> Posts { get; set; }
+    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<Post> Posts { get; set; }
     public MyDbContext() { }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

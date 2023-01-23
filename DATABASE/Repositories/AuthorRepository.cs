@@ -31,4 +31,8 @@ public class AuthorRepository : IRepository<Author>
     {
         _db.SaveChanges();
     }
+    IEnumerable<Author> IRepository<Author>.GetBySearch(string search)
+    {
+        return _db.Authors.Where(a => a.Name.Contains(search));
+    }
 }
