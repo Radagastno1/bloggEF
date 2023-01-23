@@ -4,33 +4,32 @@ using CORE;
 namespace DATABASE.Repositories;
 public class BlogRepository : IRepository<Blog>
 {
-    public void Delete(int id)
+    MyDbContext _db;
+    public BlogRepository(MyDbContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
     }
-
+    public void Delete(Blog blog)
+    {
+        _db.Blogs.Remove(blog);
+        _db.SaveChanges();
+    }
     public IEnumerable<Blog> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Blogs;
     }
-
     public Blog GetById(int id)
     {
-        throw new NotImplementedException();
+        return _db.Blogs.Find(id);
     }
-
-    public void Insert(Blog obj)
+    public int Insert(Blog blog)
     {
-        throw new NotImplementedException();
+        _db.Blogs.Add(blog);
+        _db.SaveChanges();
+        return blog.BlogId;
     }
-
-    public void Save()
+    public void Update(Blog blog)
     {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Blog obj)
-    {
-        throw new NotImplementedException();
+        _db.SaveChanges();
     }
 }

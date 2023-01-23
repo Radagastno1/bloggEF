@@ -4,33 +4,31 @@ using CORE;
 namespace DATABASE.Repositories;
 public class PostRepository : IRepository<Post>
 {
-    public void Delete(int id)
+    MyDbContext _db;
+    public PostRepository(MyDbContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
     }
-
+    public void Delete(Post post)
+    {
+        _db.Posts.Remove(post);
+    }
     public IEnumerable<Post> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Posts;
     }
-
     public Post GetById(int id)
     {
-        throw new NotImplementedException();
+        return _db.Posts.Find(id);
     }
-
-    public void Insert(Post obj)
+    public int Insert(Post post)
     {
-        throw new NotImplementedException();
+        _db.Posts.Add(post);
+        _db.SaveChanges();
+        return post.PostId;
     }
-
-    public void Save()
-    {
-        throw new NotImplementedException();
-    }
-
     public void Update(Post obj)
     {
-        throw new NotImplementedException();
+        _db.SaveChanges();
     }
 }

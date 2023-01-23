@@ -1,36 +1,34 @@
 using LOGIC;
 using CORE;
-
 namespace DATABASE.Repositories;
 public class AuthorRepository : IRepository<Author>
 {
-    public void Delete(int id)
+    MyDbContext _db;
+    public AuthorRepository(MyDbContext db)
     {
-        throw new NotImplementedException();
+        _db = db;
     }
-
+    public void Delete(Author author)
+    {
+        _db.Authors.Remove(author);
+        _db.SaveChanges();
+    }
     public IEnumerable<Author> GetAll()
     {
-        throw new NotImplementedException();
+        return _db.Authors;
     }
-
     public Author GetById(int id)
     {
-        throw new NotImplementedException();
+        return _db.Authors.Find(id);
     }
-
-    public void Insert(Author obj)
+    public int Insert(Author author)
     {
-        throw new NotImplementedException();
+        _db.Authors.Add(author);
+        _db.SaveChanges();
+        return author.AuthorId;
     }
-
-    public void Save()
+    public void Update(Author author)
     {
-        throw new NotImplementedException();
-    }
-
-    public void Update(Author obj)
-    {
-        throw new NotImplementedException();
+        _db.SaveChanges();
     }
 }
