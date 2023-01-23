@@ -5,7 +5,7 @@ public class Author
     public string Name{get;set;}
     public string Email{get;set;}
     public string Password{get;set;}
-    public List<Blog> Blogs{get;set;}
+    public List<Blog> Blogs{get;set;} = new();
     public Author(string aName, string aEmail, string aPassword)
     {
         Name = aName;

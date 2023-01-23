@@ -13,6 +13,16 @@ public class Input
         } while (!success);
         return number;
     }
+    public static string GetString(string output)
+    {
+        string text = string.Empty;
+        do
+        {
+            Console.WriteLine(output);
+            text = Console.ReadLine();
+        } while (string.IsNullOrEmpty(text));
+        return text;
+    }
     public static string GetEmail(string output)
     {
         string email = string.Empty;
@@ -25,11 +35,11 @@ public class Input
                 MailAddress address = new MailAddress(email);
                 success = true;
             }
-            catch()
+            catch
             {
                 success = false;
             }
-        } while(!success);
+        } while (!success);
         return email;
     }
 }
