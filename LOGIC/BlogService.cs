@@ -10,11 +10,21 @@ public class BlogService
     }
     public IEnumerable<Blog> GetAllBlogs()
     {
-        return _blogRepository.GetAll();
+        var blogs = _blogRepository.GetAll();
+        if(blogs == null || blogs.Count() < 1)
+        {
+            throw new ArgumentException("No blogs found.");
+        }
+        return blogs;
     }
     public Blog GetBlogById(int id)
     {
-        return _blogRepository.GetById(id);
+        var blog =  _blogRepository.GetById(id);
+        if(blog == null)
+        {
+            throw new ArgumentException("No blog found.");
+        }
+        return blog;
     }
     public void UpdateBlog(Blog blog)
     {

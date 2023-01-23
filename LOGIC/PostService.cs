@@ -8,13 +8,23 @@ public class PostService
     {
         _postRepository = postRepository;
     }
-        public IEnumerable<Post> GetAllPosts()
+    public IEnumerable<Post> GetAllPosts()
     {
-        return _postRepository.GetAll();
+        var posts = _postRepository.GetAll();
+        if (posts == null || posts.Count() < 1)
+        {
+            throw new ArgumentException("No posts found.");
+        }
+        return posts;
     }
     public Post GetPostById(int id)
     {
-        return _postRepository.GetById(id);
+        var post = _postRepository.GetById(id);
+        if (post == null)
+        {
+            throw new ArgumentException("No post found.");
+        }
+        return post;
     }
     public void UpdatePost(Post post)
     {
@@ -23,7 +33,7 @@ public class PostService
     public void DeletePost(int id)
     {
         var post = _postRepository.GetById(id);
-        if(post == null)
+        if (post == null)
         {
             throw new ArgumentException("No post found.");
         }

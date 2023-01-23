@@ -12,11 +12,21 @@ public class AuthorService
     }
     public IEnumerable<Author> GetAllAuthors()
     {
-        return _authorRepository.GetAll();
+        var authors = _authorRepository.GetAll();
+        if(authors == null || authors.Count() < 1)
+        {
+            throw new ArgumentException("No authors found.");
+        }    
+        return authors;
     }
     public Author GetAuthorById(int id)
     {
-        return _authorRepository.GetById(id);
+        var author = _authorRepository.GetById(id);
+        if(author == null)
+        {
+            throw new ArgumentException("No author found.");
+        }
+        return author;
     }
     public void UpdateAuthor(Author author)
     {
