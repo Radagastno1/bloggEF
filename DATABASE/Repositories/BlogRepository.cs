@@ -1,5 +1,6 @@
 using LOGIC;
 using CORE;
+using Microsoft.EntityFrameworkCore;
 
 namespace DATABASE.Repositories;
 public class BlogRepository : IRepository<Blog>
@@ -9,18 +10,18 @@ public class BlogRepository : IRepository<Blog>
     {
         _db = db;
     }
-    public void Delete(Blog blog)
+    public async Task DeleteAsync(Blog blog)
     {
         _db.Blogs.Remove(blog);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
     }
-    public IEnumerable<Blog> GetAll()
+    public async Task<IEnumerable<Blog>> GetAllAsync()
     {
-        return _db.Blogs;
+        return await _db.Blogs.ToListAsync();
     }
-    public Blog GetById(int id)
+    public async Task<Blog> GetByIdAsync(int id)
     {
-        return _db.Blogs.Find(id);
+        return await _db.Blogs.FindAsync(id);
     }
     public async Task<int> InsertAsync(Blog blog)
     {
@@ -28,12 +29,12 @@ public class BlogRepository : IRepository<Blog>
         await _db.SaveChangesAsync();
         return blog.BlogId;
     }
-    public void Update(Blog blog)
+    public async Task UpdateAsync(Blog blog)
     {
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
     }
-    IEnumerable<Blog> IRepository<Blog>.GetBySearch(string search)
+    public async Task<IEnumerable<Blog>> GetBySearchAsync(string search)
     {
-       return _db.Blogs.Where(b => b.Name.Contains(search) || b.Description.Contains(search));
+        return await _db.Blogs.Where(b => b.Name.Contains(search) || b.Description.Contains(search)).ToListAsync();
     }
 }

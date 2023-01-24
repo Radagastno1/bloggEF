@@ -1,5 +1,6 @@
 using LOGIC;
 using CORE;
+using Microsoft.EntityFrameworkCore;
 
 namespace DATABASE.Repositories;
 public class PostRepository : IRepository<Post>
@@ -9,30 +10,30 @@ public class PostRepository : IRepository<Post>
     {
         _db = db;
     }
-    public void Delete(Post post)
+    public async Task DeleteAsync(Post post)
     {
         _db.Posts.Remove(post);
     }
-    public IEnumerable<Post> GetAll()
+    public async Task<IEnumerable<Post>> GetAllAsync()
     {
-        return _db.Posts;
+        return await _db.Posts.ToListAsync();
     }
-    public Post GetById(int id)
+    public async Task<Post> GetByIdAsync(int id)
     {
-        return _db.Posts.Find(id);
+        return await _db.Posts.FindAsync(id);
     }
     public async Task<int> InsertAsync(Post post)
     {
         _db.Posts.Add(post);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return post.PostId;
     }
-    public void Update(Post obj)
+    public async Task UpdateAsync(Post obj)
     {
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
     }
-    IEnumerable<Post> IRepository<Post>.GetBySearch(string search)
+    public async Task<IEnumerable<Post>> GetBySearchAsync(string search)
     {
-        return _db.Posts.Where(p => p.Content.Contains(search) || p.Title.Contains(search));
+        return await _db.Posts.Where(p => p.Content.Contains(search) || p.Title.Contains(search)).ToListAsync();
     }
 }

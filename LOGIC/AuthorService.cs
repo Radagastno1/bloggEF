@@ -19,18 +19,19 @@ public class AuthorService
         }
         return authors;
     }
-    public Author GetAuthorById(int id)
+    public async Task<Author> GetAuthorById(int id)
     {
-        var author = _authorRepository.GetById(id);
+        Task<Author> selectingTask = Task.Run(async () => await _authorRepository.GetByIdAsync(id));
+        var author = selectingTask;
         if (author == null)
         {
             throw new ArgumentException("No author found.");
         }
         return author;
     }
-    public void UpdateAuthor(Author author)
+    public async Task UpdateAuthor(Author author)
     {
-        _authorRepository.Update(author);
+        await _authorRepository.UpdateAsync(author);
     }
     public void DeleteAuthor(int id)
     {
@@ -39,7 +40,7 @@ public class AuthorService
         {
             throw new ArgumentException("Author not found.");
         }
-        _authorRepository.Delete(author);
+        _authorRepository.DeleteAsync(author);
     }
     public async Task AddAuthorWithBlog(Author author, Blog blog)
     {

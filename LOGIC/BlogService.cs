@@ -17,27 +17,22 @@ public class BlogService
         }
         return blogs;
     }
-    public Blog GetBlogById(int id)
+    public async Task<Blog> GetBlogById(int id)
     {
-        var blog =  _blogRepository.GetById(id);
-        if(blog == null)
-        {
-            throw new ArgumentException("No blog found.");
-        }
-        return blog;
+        return await _blogRepository.GetByIdAsync(id);
     }
     public void UpdateBlog(Blog blog)
     {
-        _blogRepository.Update(blog);
+        _blogRepository.UpdateAsync(blog);
     }
     public void DeleteBlog(int id)
     {
-        var blog = _blogRepository.GetById(id);
+        var blog = _blogRepository.GetByIdAsync(id);
         if(blog == null)
         {
             throw new ArgumentException("No blog found.");
         }
-        _blogRepository.Delete(blog);
+        _blogRepository.DeleteAsync(blog);
     }
     public async Task<int> AddBlogAsync(Blog blog)
     {

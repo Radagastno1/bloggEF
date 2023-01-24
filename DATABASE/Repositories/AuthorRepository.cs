@@ -9,31 +9,31 @@ public class AuthorRepository : IRepository<Author>
     {
         _db = db;
     }
-    public void Delete(Author author)
+    public async Task DeleteAsync(Author author)
     {
         _db.Authors.Remove(author);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
     }
-    public IEnumerable<Author> GetAll()
+    public async Task<IEnumerable<Author>> GetAllAsync()
     {
-        return _db.Authors;
+        return await _db.Authors.ToListAsync();
     }
-    public Author GetById(int id)
+    public async Task<Author> GetByIdAsync(int id)
     {
-        return _db.Authors.Include(a => a.Blogs.Where(b => b.AuthorId == id)).First(a => a.AuthorId == id);
+        return await _db.Authors.Include(a => a.Blogs.Where(b => b.AuthorId == id)).FirstAsync(a => a.AuthorId == id);
     }
     public async Task<int> InsertAsync(Author author)
     {
         _db.Authors.Add(author);
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
         return author.AuthorId;
     }
-    public void Update(Author author)
+    public async Task UpdateAsync(Author author)
     {
-        _db.SaveChanges();
+        await _db.SaveChangesAsync();
     }
-    IEnumerable<Author> IRepository<Author>.GetBySearch(string search)
+    public async Task<IEnumerable<Author>> GetBySearchAsync(string search)
     {
-        return _db.Authors.Include(a => a.Blogs).Where(a => a.Name.Contains(search));
+        return await _db.Authors.Include(a => a.Blogs).Where(a => a.Name.Contains(search)).ToListAsync();
     }
 }
