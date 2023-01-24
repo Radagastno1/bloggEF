@@ -19,4 +19,5 @@ public class BlogView
         blog = _blogService.GetBlogById(blogId);
         return blog;
     }
+ 
 }

@@ -1,5 +1,6 @@
 ﻿using DATABASE.Repositories;
 using LOGIC;
+using CORE;
 namespace UI;
 internal class Program
 {
@@ -9,6 +10,7 @@ internal class Program
     {
         LogInService logInService = new(new LogInRepository(new DATABASE.MyDbContext()));
         AuthorService authorService = new(new AuthorRepository(new DATABASE.MyDbContext()), new BlogRepository(new DATABASE.MyDbContext()));
+        BlogService blogService = new(new BlogRepository(new DATABASE.MyDbContext()));
         AuthorView authorView = new(authorService);
         string[] options = new[] { "Visit as guest", "Sign in", "Sign up" };
         int optionNr = MenuArrows.Menu(options);
@@ -20,11 +22,13 @@ internal class Program
                 break;
             case 1:
                 LogInView logInView = new(logInService);
+                BlogView blogView = new(blogService);
                 var author = logInView.LogIn();
                 if (author != null)
                 {
+                    Blog blog = authorView.ChooseBlog(author);
                     authorView = new(authorService);
-                    authorView.AuthorMenu(author);
+                    authorView.AuthorMenu(author, blog);
                 }
                 break;
             case 2:

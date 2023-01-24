@@ -16,4 +16,10 @@ public class Blog
         DateCreated = DateTime.Now; 
     }
     public Blog(){}
+    public string BlogNameToString()
+    {
+        int i = 0;
+        return $"[{i + 1} {Name}]";
+    }
+
 }

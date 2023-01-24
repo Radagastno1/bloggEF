@@ -8,14 +8,27 @@ public class AuthorView
     {
         _authorService = authorService;
     }
-    public void AuthorMenu(Author author)
+    public Blog ChooseBlog(Author author)
     {
-        string[] options = new[] { "My blogs", "New Post", "Unpublished posts", "Add blog" };
+        author = _authorService.GetAuthorById(author.AuthorId);
+        List<string> blogNameToList = new();
+        foreach (Blog item in author.Blogs)
+        {
+            blogNameToList.Add(item.BlogNameToString());
+        }
+        string[] blogsNameToArray = blogNameToList.ToArray();
+        int blogChoice = MenuArrows.Menu(blogsNameToArray);
+        return author.Blogs[blogChoice];
+    }
+    public void AuthorMenu(Author author, Blog blog)
+    {
+        string[] options = new[] { "My blog", "New Post", "Unpublished posts", "Add blog" };
         int optionNr = MenuArrows.Menu(options);
         switch (optionNr)
         {
-            case 0: int i = 0;
-             author.Blogs.ForEach(b => Console.WriteLine($"[{i+1}] {b.Name}"));
+            case 0:
+                //gå till blogview?
+                Console.WriteLine(blog.Name);
                 break;
             case 1:
                 break;
@@ -24,7 +37,6 @@ public class AuthorView
             case 3:
                 break;
         }
-
     }
     public void NewAuthor()
     {

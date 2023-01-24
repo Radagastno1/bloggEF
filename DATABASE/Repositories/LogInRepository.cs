@@ -1,5 +1,6 @@
 using LOGIC;
 using CORE;
+using Microsoft.EntityFrameworkCore;
 
 namespace DATABASE.Repositories;
 public class LogInRepository : ILogInRepository

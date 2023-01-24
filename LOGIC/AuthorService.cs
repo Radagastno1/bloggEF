@@ -43,7 +43,6 @@ public class AuthorService
     }
     public void AddAuthorWithBlog(Author author, Blog blog)
     {
-        author.Blogs.Add(blog);
         int authorId = _authorRepository.Insert(author);
         blog.AuthorId = authorId;
         int blogId = _blogRepository.Insert(blog);
