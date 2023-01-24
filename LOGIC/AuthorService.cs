@@ -12,7 +12,8 @@ public class AuthorService
     }
     public IEnumerable<Author> GetAllAuthors()
     {
-        var authors = _authorRepository.GetAll();
+        var taskSelectAll = Task.Run(async () => await _authorRepository.GetAllAsync());
+        var authors = taskSelectAll.Result;
         if (authors == null || authors.Count() < 1)
         {
             throw new ArgumentException("No authors found.");
@@ -21,13 +22,13 @@ public class AuthorService
     }
     public async Task<Author> GetAuthorById(int id)
     {
-        Task<Author> selectingTask = Task.Run(async () => await _authorRepository.GetByIdAsync(id));
-        var author = selectingTask;
-        if (author == null)
-        {
-            throw new ArgumentException("No author found.");
-        }
-        return author;
+        return await _authorRepository.GetByIdAsync(id);
+        // var author = selectingTask;
+        // if (author == null)
+        // {
+        //     throw new ArgumentException("No author found.");
+        // }
+        // return author;
     }
     public async Task UpdateAuthor(Author author)
     {
@@ -35,7 +36,7 @@ public class AuthorService
     }
     public void DeleteAuthor(int id)
     {
-        var author = GetAuthorById(id);
+        var author = GetAuthorById(id).Result;
         if (author == null)
         {
             throw new ArgumentException("Author not found.");

@@ -42,7 +42,7 @@ public class BlogView
             Console.WriteLine("Loading blog....");
         }
         int blogId = insertTask.Result;
-        blog = _blogService.GetBlogById(blogId);
+        blog = _blogService.GetBlogById(blogId).Result;
         return blog;
     }
 

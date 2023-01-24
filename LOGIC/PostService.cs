@@ -10,7 +10,7 @@ public class PostService
     }
     public IEnumerable<Post> GetAllPosts()
     {
-        var posts = _postRepository.GetAll();
+        var posts = _postRepository.GetAllAsync().Result;
         if (posts == null || posts.Count() < 1)
         {
             throw new ArgumentException("No posts found.");
@@ -19,7 +19,7 @@ public class PostService
     }
     public Post GetPostById(int id)
     {
-        var post = _postRepository.GetById(id);
+        var post = _postRepository.GetByIdAsync(id).Result;
         if (post == null)
         {
             throw new ArgumentException("No post found.");
@@ -28,16 +28,16 @@ public class PostService
     }
     public void UpdatePost(Post post)
     {
-        _postRepository.Update(post);
+        _postRepository.UpdateAsync(post);
     }
     public void DeletePost(int id)
     {
-        var post = _postRepository.GetById(id);
+        var post = _postRepository.GetByIdAsync(id).Result;
         if (post == null)
         {
             throw new ArgumentException("No post found.");
         }
-        _postRepository.Delete(post);
+        _postRepository.DeleteAsync(post);
     }
     public void AddPost(Post post)
     {

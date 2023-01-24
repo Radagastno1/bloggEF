@@ -14,7 +14,13 @@ public class AuthorView
     }
     public Blog ChooseBlog(Author author)
     {
-        author = _authorService.GetAuthorById(author.AuthorId);
+        Task<Author> taskSelectingAuthor = Task.Run(async () => await _authorService.GetAuthorById(author.AuthorId));
+        while(!taskSelectingAuthor.IsCompleted)
+        {
+            Console.SetCursorPosition(0,5);
+            Console.WriteLine("Loading author....");
+        }
+        author = taskSelectingAuthor.Result;
         List<string> blogNameToList = new();
         foreach (Blog item in author.Blogs)
         {

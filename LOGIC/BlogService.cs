@@ -10,7 +10,7 @@ public class BlogService
     }
     public IEnumerable<Blog> GetAllBlogs()
     {
-        var blogs = _blogRepository.GetAll();
+        var blogs = _blogRepository.GetAllAsync().Result;
         if(blogs == null || blogs.Count() < 1)
         {
             throw new ArgumentException("No blogs found.");
@@ -27,7 +27,7 @@ public class BlogService
     }
     public void DeleteBlog(int id)
     {
-        var blog = _blogRepository.GetByIdAsync(id);
+        var blog = _blogRepository.GetByIdAsync(id).Result;
         if(blog == null)
         {
             throw new ArgumentException("No blog found.");
