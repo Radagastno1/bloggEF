@@ -16,4 +16,12 @@ public class Post
         DateCreated = DateTime.Now;
     }
     public Post(){}
+    public string ToStringPublished()
+    {
+        return $"{Title}\n{Content}\n{DatePublished}";
+    }
+    public string ToStringUnPublished()
+    {
+        return $"{Title}\n{Content}\n{DateCreated}";
+    }
 }

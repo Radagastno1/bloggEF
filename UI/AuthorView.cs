@@ -25,30 +25,45 @@ public class AuthorView
     public void AuthorMenu(Author author, Blog blog)
     {
         string[] options = new[] { "My blog", "New Post", "Unpublished posts", "Add blog" };
-        int optionNr = MenuArrows.Menu(options);
-        switch (optionNr)
+        while (true)
         {
-            case 0:
-                Console.WriteLine(blog.Name);
-                Console.WriteLine();
-                Console.WriteLine(blog.Description);
+            int optionNr = MenuArrows.Menu(options);
+            switch (optionNr)
+            {
+                case 0:
+                    Console.WriteLine(blog.Name);
+                    Console.WriteLine();
+                    Console.WriteLine(blog.Description);
+                    try
+                    {
+                        blog.Posts.Where(p => p.IsPublished == true).ToList().ForEach(p => Console.WriteLine(p.ToStringPublished()));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        Console.WriteLine("No posts yet..");
+                    }
+                    Console.ReadKey();
+                    break;
+                case 1:
+                    blog.Posts.Add(AddPost(blog));
+                    Console.ReadKey();
+                    break;
+                case 2:
                 try
                 {
-                    blog.Posts.ForEach(p => Console.WriteLine(p.ToString()));
+                    blog.Posts.Where(p => p.IsPublished == false).ToList().ForEach(p => Console.WriteLine(p.ToStringUnPublished()));
                 }
                 catch(InvalidOperationException)
                 {
-                    Console.WriteLine("No posts yet..");
+                    Console.WriteLine("No unpublised posts..");
                 }
-                break;
-            case 1:
-                blog.Posts.Add(AddPost(blog));
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
+                Console.ReadKey();
+                    break;
+                case 3:
+                    break;
+            }
         }
+
     }
     public void NewAuthor()
     {

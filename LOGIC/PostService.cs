@@ -39,4 +39,9 @@ public class PostService
         }
         _postRepository.Delete(post);
     }
+    public void AddPost(Post post)
+    {
+        _postRepository.Insert(post);
+        
+    }
 }
