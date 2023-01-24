@@ -11,7 +11,7 @@ internal class Program
         LogInService logInService = new(new LogInRepository(new DATABASE.MyDbContext()));
         AuthorService authorService = new(new AuthorRepository(new DATABASE.MyDbContext()), new BlogRepository(new DATABASE.MyDbContext()));
         BlogService blogService = new(new BlogRepository(new DATABASE.MyDbContext()));
-        AuthorView authorView = new(authorService);
+        AuthorView authorView = new(authorService, blogService);
         string[] options = new[] { "Visit as guest", "Sign in", "Sign up" };
         int optionNr = MenuArrows.Menu(options);
         switch (optionNr)
@@ -27,12 +27,12 @@ internal class Program
                 if (author != null)
                 {
                     Blog blog = authorView.ChooseBlog(author);
-                    authorView = new(authorService);
+                    authorView = new(authorService, blogService);
                     authorView.AuthorMenu(author, blog);
                 }
                 break;
             case 2:
-                authorView = new(authorService);
+                authorView = new(authorService, blogService);
                 authorView.NewAuthor();
                 break;
         }

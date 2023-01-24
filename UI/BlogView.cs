@@ -8,6 +8,14 @@ public class BlogView
     {
         _blogService = blogService;
     }
+    public Post AddPost(Blog blog)
+    {
+        string title = Input.GetString("Title: ");
+        string content = Input.GetString("Write post: ");
+        Post post = new(title, content);
+        post.BlogId = blog.BlogId;
+        return post;
+    }
     public Blog AddBlog(Author author)
     {
         string blogName = Input.GetString("Name of blog: ");

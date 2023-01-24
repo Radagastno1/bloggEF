@@ -4,9 +4,11 @@ namespace UI;
 public class AuthorView
 {
     AuthorService _authorService;
-    public AuthorView(AuthorService authorService)
+    BlogService _blogService;
+    public AuthorView(AuthorService authorService, BlogService blogService)
     {
         _authorService = authorService;
+        _blogService = blogService;
     }
     public Blog ChooseBlog(Author author)
     {
@@ -27,10 +29,20 @@ public class AuthorView
         switch (optionNr)
         {
             case 0:
-                //gå till blogview?
                 Console.WriteLine(blog.Name);
+                Console.WriteLine();
+                Console.WriteLine(blog.Description);
+                try
+                {
+                    blog.Posts.ForEach(p => Console.WriteLine(p.ToString()));
+                }
+                catch(InvalidOperationException)
+                {
+                    Console.WriteLine("No posts yet..");
+                }
                 break;
             case 1:
+                blog.Posts.Add(AddPost(blog));
                 break;
             case 2:
                 break;
@@ -48,5 +60,13 @@ public class AuthorView
         string blogDescription = Input.GetString("Describe your blog: ");
         Blog blog = new(blogName, blogDescription);
         _authorService.AddAuthorWithBlog(author, blog);
+    }
+    public Post AddPost(Blog blog)
+    {
+        string title = Input.GetString("Title: ");
+        string content = Input.GetString("Write post: ");
+        Post post = new(title, content);
+        post.BlogId = blog.BlogId;
+        return post;
     }
 }
