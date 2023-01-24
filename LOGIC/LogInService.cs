@@ -7,13 +7,8 @@ public class LogInService
     {
         _logInRepository = logInRepository;
     }
-    public Author TryLogIn(string email, string password)
+    public async Task<Author> TryLogIn(string email, string password)
     {
-        var author = _logInRepository.TryLogIn(email, password);
-        if(author == null)
-        {
-            throw new ArgumentException("Wrong password or email.");
-        }
-        return author;
+        return await _logInRepository.TryLogInAsync(email, password);
     }
 }

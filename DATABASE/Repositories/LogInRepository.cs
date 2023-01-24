@@ -10,8 +10,8 @@ public class LogInRepository : ILogInRepository
     {
         _db = db;
     }
-    public Author TryLogIn(string email, string password)
+    public async Task<Author> TryLogInAsync(string email, string password)
     {
-        return _db.Authors.Where(a => a.Email == email && a.Password == password).FirstOrDefault();
+        return await _db.Authors.Where(a => a.Email == email && a.Password == password).FirstAsync();
     }
 }
