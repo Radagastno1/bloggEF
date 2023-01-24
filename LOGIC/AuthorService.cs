@@ -41,11 +41,11 @@ public class AuthorService
         }
         _authorRepository.Delete(author);
     }
-    public void AddAuthorWithBlog(Author author, Blog blog)
+    public async Task AddAuthorWithBlog(Author author, Blog blog)
     {
-        int authorId = _authorRepository.Insert(author);
+        int authorId = await _authorRepository.InsertAsync(author);
         blog.AuthorId = authorId;
-        int blogId = _blogRepository.Insert(blog);
+        int blogId = _blogRepository.InsertAsync(blog).Result;
         // AssignBlogToAuthor(authorId, blogId);
     }
     // public void AssignBlogToAuthor(int authorId, int blogId)

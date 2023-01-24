@@ -41,7 +41,7 @@ public class PostService
     }
     public void AddPost(Post post)
     {
-        _postRepository.Insert(post);
+        _postRepository.InsertAsync(post);
         
     }
 }

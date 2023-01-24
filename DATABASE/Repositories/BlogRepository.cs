@@ -22,10 +22,10 @@ public class BlogRepository : IRepository<Blog>
     {
         return _db.Blogs.Find(id);
     }
-    public int Insert(Blog blog)
+    public async Task<int> InsertAsync(Blog blog)
     {
-        _db.Blogs.Add(blog);
-        _db.SaveChanges();
+        await _db.Blogs.AddAsync(blog);
+        await _db.SaveChangesAsync();
         return blog.BlogId;
     }
     public void Update(Blog blog)

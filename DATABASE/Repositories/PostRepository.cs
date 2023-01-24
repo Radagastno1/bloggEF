@@ -21,7 +21,7 @@ public class PostRepository : IRepository<Post>
     {
         return _db.Posts.Find(id);
     }
-    public int Insert(Post post)
+    public async Task<int> InsertAsync(Post post)
     {
         _db.Posts.Add(post);
         _db.SaveChanges();

@@ -22,7 +22,7 @@ public class AuthorRepository : IRepository<Author>
     {
         return _db.Authors.Include(a => a.Blogs.Where(b => b.AuthorId == id)).First(a => a.AuthorId == id);
     }
-    public int Insert(Author author)
+    public async Task<int> InsertAsync(Author author)
     {
         _db.Authors.Add(author);
         _db.SaveChanges();

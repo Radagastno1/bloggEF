@@ -39,9 +39,9 @@ public class BlogService
         }
         _blogRepository.Delete(blog);
     }
-    public int AddBlog(Blog blog)
+    public async Task<int> AddBlogAsync(Blog blog)
     {
-        return _blogRepository.Insert(blog);
+        return await _blogRepository.InsertAsync(blog);
     }
     
 }
