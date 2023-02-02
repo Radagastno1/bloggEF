@@ -8,49 +8,45 @@ public class BlogService
     {
         _blogRepository = blogRepository;
     }
-    public IEnumerable<Blog> GetAllBlogs()
+    public async Task<IEnumerable<Blog>> GetAllBlogs()
     {
-        var blogs = _blogRepository.GetAll();
+        var blogs = await _blogRepository.GetAllAsync();
         if (blogs == null || blogs.Count() < 1)
         {
             throw new ArgumentException("No blogs found.");
         }
         return blogs;
     }
-    public IEnumerable<Blog> GetBlogsByRating()
+    public async Task<IEnumerable<Blog>> GetBlogsByRating()
     {
-        var blogs = _blogRepository.GetAll().OrderBy(b => b.Ratings);
-        if (blogs == null || blogs.Count() < 1)
+        var blogs = await _blogRepository.GetAllAsync();
+        
+        if(blogs == null)
         {
             throw new ArgumentException("No blogs found.");
         }
-        return blogs;
+        return blogs.OrderByDescending(b => b.Ratings);
     }
-    public Blog GetBlogById(int id)
+    public async Task<Blog> GetBlogById(int id)
     {
-        var blog = _blogRepository.GetById(id);
-        if (blog == null)
-        {
-            throw new ArgumentException("No blog found.");
-        }
-        return blog;
+        return await _blogRepository.GetByIdAsync(id);
     }
     public void UpdateBlog(Blog blog)
     {
-        _blogRepository.Update(blog);
+        _blogRepository.UpdateAsync(blog);
     }
     public void DeleteBlog(int id)
     {
-        var blog = _blogRepository.GetById(id);
-        if (blog == null)
+        var blog = _blogRepository.GetByIdAsync(id).Result;
+        if(blog == null)
         {
             throw new ArgumentException("No blog found.");
         }
-        _blogRepository.Delete(blog);
+        _blogRepository.DeleteAsync(blog);
     }
-    public int AddBlog(Blog blog)
+    public async Task<int> AddBlogAsync(Blog blog)
     {
-        return _blogRepository.Insert(blog);
+        return await _blogRepository.InsertAsync(blog);
     }
 
 }

@@ -2,5 +2,5 @@ using CORE;
 namespace LOGIC;
 public interface ILogInRepository
 {
-    public Author TryLogIn(string email, string password);
+    public Task<Author> TryLogInAsync(string email, string password);
 }

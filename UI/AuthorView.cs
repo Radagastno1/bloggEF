@@ -5,14 +5,22 @@ public class AuthorView
 {
     AuthorService _authorService;
     BlogService _blogService;
-    public AuthorView(AuthorService authorService, BlogService blogService)
+    PostService _postService;
+    public AuthorView(AuthorService authorService, BlogService blogService, PostService postService)
     {
         _authorService = authorService;
         _blogService = blogService;
+        _postService = postService;
     }
     public Blog ChooseBlog(Author author)
     {
-        author = _authorService.GetAuthorById(author.AuthorId);
+        Task<Author> taskSelectingAuthor = Task.Run(async () => await _authorService.GetAuthorById(author.AuthorId));
+        while(!taskSelectingAuthor.IsCompleted)
+        {
+            Console.SetCursorPosition(0,5);
+            Console.WriteLine("Loading author....");
+        }
+        author = taskSelectingAuthor.Result;
         List<string> blogNameToList = new();
         foreach (Blog item in author.Blogs)
         {
@@ -45,7 +53,8 @@ public class AuthorView
                     Console.ReadKey();
                     break;
                 case 1:
-                    blog.Posts.Add(AddPost(blog));
+                    BlogView blogView = new(_blogService, _postService);
+                    blogView.AddPost(blog);
                     Console.ReadKey();
                     break;
                 case 2:
@@ -76,12 +85,5 @@ public class AuthorView
         Blog blog = new(blogName, blogDescription);
         _authorService.AddAuthorWithBlog(author, blog);
     }
-    public Post AddPost(Blog blog)
-    {
-        string title = Input.GetString("Title: ");
-        string content = Input.GetString("Write post: ");
-        Post post = new(title, content);
-        post.BlogId = blog.BlogId;
-        return post;
-    }
+ 
 }

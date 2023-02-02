@@ -1,4 +1,5 @@
 using LOGIC;
+using CORE;
 namespace UI;
 public class GuestView
 {
@@ -7,7 +8,7 @@ public class GuestView
     {
         _blogService = blogService;
     }
-    public void ShowBlogMenu()
+    public async void ShowBlogMenu()
     {
         while (true)
         {
@@ -16,7 +17,13 @@ public class GuestView
             switch (optionNr)
             {
                 case 0:
-                    _blogService.GetBlogsByRating().ToList().ForEach(b => Console.WriteLine(b.BlogNameToString()));
+                    Task<IEnumerable<Blog>> loadingBlogs = Task.Run(async () => await _blogService.GetBlogsByRating());
+                    while (!loadingBlogs.IsCompleted)
+                    {
+                        Console.SetCursorPosition(0, 5);
+                        Console.WriteLine("Loading blogs....");
+                    }
+                    loadingBlogs.Result.ToList().ForEach(b => Console.WriteLine(b.BlogNameToString()));
                     Console.ReadKey();
                     break;
                 case 1:

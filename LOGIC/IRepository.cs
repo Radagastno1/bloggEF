@@ -2,10 +2,10 @@
 namespace LOGIC;
 public interface IRepository<T>
 {
-    IEnumerable<T> GetAll();
-    T GetById(int id);
-    int Insert(T obj);
-    void Update(T obj);
-    void Delete(T obj);
-    IEnumerable<T> GetBySearch(string search);
+    Task<IEnumerable<T>> GetAllAsync();
+    Task<T> GetByIdAsync(int id);
+    Task<int> InsertAsync(T obj);
+    Task UpdateAsync(T obj);
+    Task DeleteAsync(T obj);
+    Task<IEnumerable<T>> GetBySearchAsync(string search);
 }

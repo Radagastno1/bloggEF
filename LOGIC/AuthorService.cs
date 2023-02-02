@@ -12,40 +12,42 @@ public class AuthorService
     }
     public IEnumerable<Author> GetAllAuthors()
     {
-        var authors = _authorRepository.GetAll();
+        var taskSelectAll = Task.Run(async () => await _authorRepository.GetAllAsync());
+        var authors = taskSelectAll.Result;
         if (authors == null || authors.Count() < 1)
         {
             throw new ArgumentException("No authors found.");
         }
         return authors;
     }
-    public Author GetAuthorById(int id)
+    public async Task<Author> GetAuthorById(int id)
     {
-        var author = _authorRepository.GetById(id);
-        if (author == null)
-        {
-            throw new ArgumentException("No author found.");
-        }
-        return author;
+        return await _authorRepository.GetByIdAsync(id);
+        // var author = selectingTask;
+        // if (author == null)
+        // {
+        //     throw new ArgumentException("No author found.");
+        // }
+        // return author;
     }
-    public void UpdateAuthor(Author author)
+    public async Task UpdateAuthor(Author author)
     {
-        _authorRepository.Update(author);
+        await _authorRepository.UpdateAsync(author);
     }
     public void DeleteAuthor(int id)
     {
-        var author = GetAuthorById(id);
+        var author = GetAuthorById(id).Result;
         if (author == null)
         {
             throw new ArgumentException("Author not found.");
         }
-        _authorRepository.Delete(author);
+        _authorRepository.DeleteAsync(author);
     }
-    public void AddAuthorWithBlog(Author author, Blog blog)
+    public async Task AddAuthorWithBlog(Author author, Blog blog)
     {
-        int authorId = _authorRepository.Insert(author);
+        int authorId = await _authorRepository.InsertAsync(author);
         blog.AuthorId = authorId;
-        int blogId = _blogRepository.Insert(blog);
+        int blogId = _blogRepository.InsertAsync(blog).Result;
         // AssignBlogToAuthor(authorId, blogId);
     }
     // public void AssignBlogToAuthor(int authorId, int blogId)
