@@ -13,29 +13,38 @@ internal class Program
         BlogService blogService = new(new BlogRepository(new DATABASE.MyDbContext()));
         PostService postService = new(new PostRepository(new DATABASE.MyDbContext()));
         AuthorView authorView = new(authorService, blogService, postService);
-        GuestView guestView = new(blogService);
+        GuestView guestView = new(blogService, postService);
+
+        DATABASE.MyDbContext db = new();
+        db.Authors.ToList().ForEach(a => authorService.DeleteAuthor(a.AuthorId));
+        db.Blogs.ToList().ForEach(b => blogService.DeleteBlog(b.BlogId));
+        db.Posts.ToList().ForEach(p => postService.DeletePost(p.PostId));
+
         string[] options = new[] { "Visit as guest", "Sign in", "Sign up" };
-        int optionNr = MenuArrows.Menu(options);
-        switch (optionNr)
+        while (true)
         {
-            case 0:
-                guestView.ShowBlogMenu();
-                break;
-            case 1:
-                LogInView logInView = new(logInService);
-                BlogView blogView = new(blogService, postService);
-                var author = logInView.LogIn();
-                if (author != null)
-                {
-                    Blog blog = authorView.ChooseBlog(author);
+            int optionNr = MenuArrows.Menu(options);
+            switch (optionNr)
+            {
+                case 0:
+                    guestView.ShowBlogMenu();
+                    break;
+                case 1:
+                    LogInView logInView = new(logInService);
+                    BlogView blogView = new(blogService, postService);
+                    var author = logInView.LogIn();
+                    if (author != null)
+                    {
+                        Blog blog = authorView.ChooseBlog(author);
+                        authorView = new(authorService, blogService, postService);
+                        authorView.AuthorMenu(author, blog);
+                    }
+                    break;
+                case 2:
                     authorView = new(authorService, blogService, postService);
-                    authorView.AuthorMenu(author, blog);
-                }
-                break;
-            case 2:
-                authorView = new(authorService, blogService, postService);
-                authorView.NewAuthor();
-                break;
+                    authorView.NewAuthor();
+                    break;
+            }
         }
     }
 }

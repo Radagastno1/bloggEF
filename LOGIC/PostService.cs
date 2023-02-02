@@ -8,14 +8,24 @@ public class PostService
     {
         _postRepository = postRepository;
     }
-    public IEnumerable<Post> GetAllPosts()
+    public async Task<IEnumerable<Post>> GetAllPosts()
     {
-        var posts = _postRepository.GetAllAsync().Result;
-        if (posts == null || posts.Count() < 1)
+        var posts = await _postRepository.GetAllAsync();
+        if (posts == null)
         {
             throw new ArgumentException("No posts found.");
         }
         return posts;
+    }
+
+    public async Task<IEnumerable<Post>> GetLatestPosts()
+    {
+        var posts = await _postRepository.GetAllAsync();
+        if(posts == null)
+        {
+            throw new ArgumentException("No posts found.");
+        }
+        return posts.OrderByDescending(p => p.DatePublished).Take(5);
     }
     public Post GetPostById(int id)
     {
