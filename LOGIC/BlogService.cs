@@ -20,12 +20,28 @@ public class BlogService
     public async Task<IEnumerable<Blog>> GetBlogsByRating()
     {
         var blogs = await _blogRepository.GetAllAsync();
-        
-        if(blogs == null)
+
+        if (blogs == null)
         {
             throw new ArgumentException("No blogs found.");
         }
         return blogs.OrderByDescending(b => b.Ratings);
+    }
+    public async Task<IEnumerable<Blog>> GetBlogsBySearch(string search)
+    {
+        var blogs = await _blogRepository.GetAllAsync();
+
+        if (blogs == null)
+        {
+            throw new ArgumentException("No blogs found.");
+        }
+        var searchToLow = search.ToLower();
+        var matchingBlogs = blogs.Where(b => b.Name.ToLower().Contains(searchToLow) || b.Author != null && b.Author.Name.ToLower().Contains(searchToLow) || b.Posts.Any(p => p.Title.ToLower().Contains(searchToLow) || p.Content.ToLower().Contains(searchToLow)));
+       if(matchingBlogs == null)
+       {
+            throw new InvalidOperationException("Couldn't find any matches with your search..");
+       }
+       return matchingBlogs;
     }
     public async Task<Blog> GetBlogById(int id)
     {
@@ -38,7 +54,7 @@ public class BlogService
     public void DeleteBlog(int id)
     {
         var blog = _blogRepository.GetByIdAsync(id).Result;
-        if(blog == null)
+        if (blog == null)
         {
             throw new ArgumentException("No blog found.");
         }
