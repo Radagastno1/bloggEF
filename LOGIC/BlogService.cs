@@ -11,7 +11,16 @@ public class BlogService
     public IEnumerable<Blog> GetAllBlogs()
     {
         var blogs = _blogRepository.GetAll();
-        if(blogs == null || blogs.Count() < 1)
+        if (blogs == null || blogs.Count() < 1)
+        {
+            throw new ArgumentException("No blogs found.");
+        }
+        return blogs;
+    }
+    public IEnumerable<Blog> GetBlogsByRating()
+    {
+        var blogs = _blogRepository.GetAll().OrderBy(b => b.Ratings);
+        if (blogs == null || blogs.Count() < 1)
         {
             throw new ArgumentException("No blogs found.");
         }
@@ -19,8 +28,8 @@ public class BlogService
     }
     public Blog GetBlogById(int id)
     {
-        var blog =  _blogRepository.GetById(id);
-        if(blog == null)
+        var blog = _blogRepository.GetById(id);
+        if (blog == null)
         {
             throw new ArgumentException("No blog found.");
         }
@@ -33,7 +42,7 @@ public class BlogService
     public void DeleteBlog(int id)
     {
         var blog = _blogRepository.GetById(id);
-        if(blog == null)
+        if (blog == null)
         {
             throw new ArgumentException("No blog found.");
         }
@@ -43,5 +52,5 @@ public class BlogService
     {
         return _blogRepository.Insert(blog);
     }
-    
+
 }

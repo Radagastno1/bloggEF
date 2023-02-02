@@ -13,12 +13,12 @@ internal class Program
         BlogService blogService = new(new BlogRepository(new DATABASE.MyDbContext()));
         PostService postService = new(new PostRepository(new DATABASE.MyDbContext()));
         AuthorView authorView = new(authorService, blogService);
+        GuestView guestView = new(blogService);
         string[] options = new[] { "Visit as guest", "Sign in", "Sign up" };
         int optionNr = MenuArrows.Menu(options);
         switch (optionNr)
         {
             case 0:
-                GuestView guestView = new();
                 guestView.ShowBlogMenu();
                 break;
             case 1:
