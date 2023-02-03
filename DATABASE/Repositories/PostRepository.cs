@@ -25,7 +25,7 @@ public class PostRepository : IRepository<Post>
     public async Task<int> InsertAsync(Post post)
     {
         _db.Posts.Add(post);
-        await _db.SaveChangesAsync();
+        // await _db.SaveChangesAsync();
         return post.PostId;
     }
     public async Task UpdateAsync(Post obj)
@@ -35,5 +35,9 @@ public class PostRepository : IRepository<Post>
     public async Task<IEnumerable<Post>> GetBySearchAsync(string search)
     {
         return await _db.Posts.Where(p => p.Content.Contains(search) || p.Title.Contains(search)).ToListAsync();
+    }
+    public async Task SaveChangesAsync()
+    {
+        await _db.SaveChangesAsync();
     }
 }

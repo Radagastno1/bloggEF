@@ -8,4 +8,5 @@ public interface IRepository<T>
     Task UpdateAsync(T obj);
     Task DeleteAsync(T obj);
     Task<IEnumerable<T>> GetBySearchAsync(string search);
+    Task SaveChangesAsync();
 }

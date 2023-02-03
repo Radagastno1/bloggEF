@@ -9,6 +9,14 @@ public class LogInService
     }
     public async Task<Author> TryLogIn(string email, string password)
     {
-        return await _logInRepository.TryLogInAsync(email, password);
+        try
+        {
+            var author = await _logInRepository.TryLogInAsync(email, password);
+            return author;
+        }
+        catch (InvalidOperationException)
+        {
+            throw new InvalidOperationException("Sign in unsuccesful.");
+        }
     }
 }

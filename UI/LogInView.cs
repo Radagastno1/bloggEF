@@ -26,10 +26,10 @@ public class LogInView
             author = authorTask.Result;
             return author;
         }
-        catch (ArgumentException e)
+        catch (InvalidOperationException e)
         {
-            Console.WriteLine(e.Message);
+            Console.WriteLine(e);
+            return null;
         }
-        return author;
     }
 }

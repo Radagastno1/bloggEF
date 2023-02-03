@@ -15,11 +15,6 @@ internal class Program
         AuthorView authorView = new(authorService, blogService, postService);
         GuestView guestView = new(blogService, postService);
 
-        DATABASE.MyDbContext db = new();
-        db.Authors.ToList().ForEach(a => authorService.DeleteAuthor(a.AuthorId));
-        db.Blogs.ToList().ForEach(b => blogService.DeleteBlog(b.BlogId));
-        db.Posts.ToList().ForEach(p => postService.DeletePost(p.PostId));
-
         string[] options = new[] { "Visit as guest", "Sign in", "Sign up" };
         while (true)
         {
@@ -33,7 +28,11 @@ internal class Program
                     LogInView logInView = new(logInService);
                     BlogView blogView = new(blogService, postService);
                     var author = logInView.LogIn();
-                    if (author != null)
+                    if(author == null)
+                    {
+                        break;
+                    }
+                    else
                     {
                         Blog blog = authorView.ChooseBlog(author);
                         authorView = new(authorService, blogService, postService);

@@ -12,6 +12,11 @@ public class LogInRepository : ILogInRepository
     }
     public async Task<Author> TryLogInAsync(string email, string password)
     {
-        return await _db.Authors.Where(a => a.Email == email && a.Password == password).FirstAsync();
+        var author = await _db.Authors.Where(a => a.Email == email && a.Password == password).FirstAsync();
+        if(author == null)
+        {
+            throw new InvalidOperationException();
+        }
+        return author;
     }
 }

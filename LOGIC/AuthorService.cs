@@ -42,12 +42,15 @@ public class AuthorService
             throw new ArgumentException("Author not found.");
         }
         _authorRepository.DeleteAsync(author);
+        // _authorRepository.SaveChangesAsync();
     }
     public async Task AddAuthorWithBlog(Author author, Blog blog)
     {
         int authorId = await _authorRepository.InsertAsync(author);
         blog.AuthorId = authorId;
         int blogId = _blogRepository.InsertAsync(blog).Result;
+        await _authorRepository.SaveChangesAsync();
+        await _blogRepository.SaveChangesAsync();
         // AssignBlogToAuthor(authorId, blogId);
     }
     // public void AssignBlogToAuthor(int authorId, int blogId)

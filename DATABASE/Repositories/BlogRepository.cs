@@ -13,7 +13,7 @@ public class BlogRepository : IRepository<Blog>
     public async Task DeleteAsync(Blog blog)
     {
         _db.Blogs.Remove(blog);
-        await _db.SaveChangesAsync();
+        // await _db.SaveChangesAsync();
     }
     public async Task<IEnumerable<Blog>> GetAllAsync()
     {
@@ -26,7 +26,7 @@ public class BlogRepository : IRepository<Blog>
     public async Task<int> InsertAsync(Blog blog)
     {
         await _db.Blogs.AddAsync(blog);
-        await _db.SaveChangesAsync();
+        // await _db.SaveChangesAsync();
         return blog.BlogId;
     }
     public async Task UpdateAsync(Blog blog)
@@ -36,5 +36,9 @@ public class BlogRepository : IRepository<Blog>
     public async Task<IEnumerable<Blog>> GetBySearchAsync(string search)
     {
         return await _db.Blogs.Where(b => b.Name.Contains(search) || b.Description.Contains(search)).ToListAsync();
+    }
+    public async Task SaveChangesAsync()
+    {
+        await _db.SaveChangesAsync();
     }
 }

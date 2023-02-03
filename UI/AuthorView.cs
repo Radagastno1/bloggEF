@@ -83,6 +83,7 @@ public class AuthorView
         string blogName = Input.GetString("Name your blog: ");
         string blogDescription = Input.GetString("Describe your blog: ");
         Blog blog = new(blogName, blogDescription);
+        blog.Author = author;
         _authorService.AddAuthorWithBlog(author, blog);
     }
  
