@@ -48,10 +48,12 @@ public class PostService
             throw new ArgumentException("No post found.");
         }
         _postRepository.DeleteAsync(post);
+        _postRepository.SaveChangesAsync();
     }
     public void AddPost(Post post)
     {
         _postRepository.InsertAsync(post);
+        _postRepository.SaveChangesAsync();
         
     }
 }

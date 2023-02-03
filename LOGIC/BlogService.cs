@@ -59,6 +59,7 @@ public class BlogService
             throw new ArgumentException("No blog found.");
         }
         _blogRepository.DeleteAsync(blog);
+        _blogRepository.SaveChangesAsync();
     }
     public async Task<int> AddBlogAsync(Blog blog)
     {
